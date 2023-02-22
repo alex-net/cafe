@@ -31,6 +31,7 @@ class m230222_092115_cafe_init extends Migration
         ], "COMMENT 'Заказы' ");
 
         $this->createTable('{{%orders_dishs}}', [
+            'id' => $this->primaryKey()->comment('Ключик'),
             'oid' => $this->integer()->notNull()->comment('ссылка на заказ'),
             'did' => $this->integer()->notNull()->comment('сылка на заказанное блюдо'),
             'count' => $this->integer()->notNull()->defaultValue(1)->comment('Число блюд в заказе'),
@@ -39,7 +40,7 @@ class m230222_092115_cafe_init extends Migration
         $this->addForeignKey('fk-dish-link', '{{%orders_dishs}}', ['did'], '{{%dishs}}', ['id'], 'cascade', 'cascade');
         $this->createIndex('od_oid_ind', '{{%orders_dishs}}', ['oid']);
         $this->createIndex('od_did_ind', '{{%orders_dishs}}', ['did']);
-        $this->addPrimaryKey('od_pk', '{{%orders_dishs}}', ['oid', 'did']);
+        $this->createIndex('od_unic', '{{%orders_dishs}}', ['oid', 'did'], true);
     }
 
     /**
