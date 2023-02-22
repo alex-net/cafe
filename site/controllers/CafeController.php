@@ -22,7 +22,7 @@ class CafeController extends Controller
                     'menu' => ['get'],
                     'new-order' => ['post'],
                     'add-dish-to-order' => ['post'],
-                    'good-povars' => ['post'],
+                    'good-povars' => ['get'],
                 ],
             ]
         ];
