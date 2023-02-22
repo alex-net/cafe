@@ -39,6 +39,7 @@ class m230222_092115_cafe_init extends Migration
         $this->addForeignKey('fk-dish-link', '{{%orders_dishs}}', ['did'], '{{%dishs}}', ['id'], 'cascade', 'cascade');
         $this->createIndex('od_oid_ind', '{{%orders_dishs}}', ['oid']);
         $this->createIndex('od_did_ind', '{{%orders_dishs}}', ['did']);
+        $this->addPrimaryKey('od_pk', '{{%orders_dishs}}', ['oid', 'did']);
     }
 
     /**

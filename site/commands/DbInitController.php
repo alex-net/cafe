@@ -71,13 +71,21 @@ class DbInitController extends Controller
         $this->stdout("\nГенерация связов заказ-блюда ($ordersCount*[1,$dishsPerOrder][1,$dishsOneType]): ");
         $items = [];
         for ($i = 0; $i < $ordersCount; $i++) {
+            $oId = $i + 1;
             $dishCount = rand(1, $dishsPerOrder);
             for ($j = 0; $j < $dishCount; $j++) {
-                $items[] = [
-                    'oid' => $i + 1,
-                    'did' => rand(1, $dishsCount),
-                    'count' => rand(1, 5),
-                ];
+                $dId = rand(1, $dishsCount);
+                if (isset($items["$oId-$dId"])) {
+                    $items["$oId-$dId"]['count'] += rand(1, $dishsOneType);
+                } else {
+                    $items["$oId-$dId"] = [
+                        'oid' => $oId,
+                        'did' => $dId,
+                        'count' => rand(1, $dishsOneType),
+                    ];
+                }
+
+
                 $this->stdout('.');
             }
         }
