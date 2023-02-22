@@ -20,17 +20,10 @@ class m230222_092115_cafe_init extends Migration
         $this->createTable('{{%dishs}}', [
             'id' => $this->primaryKey()->comment('Ключик еды'),
             'name' => $this->string(100)->notNull()->comment('Наименование блюда'),
-            'descr' => $this->text()->comment('Описание блюда'),
+            'cid' => $this->integer()->notNull()->comment('Ссылка на повара'),
         ], "COMMENT 'Список блюд (меню)' ");
-
-        $this->createTable('{{%cooks_dishs}}', [
-            'cid' => $this->integer()->notNull()->comment('ссылка на повара'),
-            'did' => $this->integer()->notNull()->comment('ссылка на еду'),
-        ], "COMMENT 'Связь поравов и блюд, которые они готовят' ");
-        $this->addForeignKey('fk-cook-link', '{{%cooks_dishs}}', ['cid'], '{{%cooks}}', ['id'], 'cascade', 'cascade');
-        $this->addForeignKey('fk-dish-link-cook', '{{%cooks_dishs}}', ['did'], '{{%dishs}}', ['id'], 'cascade', 'cascade');
-        $this->createIndex('cdb_cid_ind', '{{%cooks_dishs}}', ['cid']);
-        $this->createIndex('cdb_did_ind', '{{%cooks_dishs}}', ['did']);
+        $this->addForeignKey('fk-cook-link', '{{%dishs}}', ['cid'], '{{%cooks}}', ['id'], 'cascade', 'cascade');
+        $this->createIndex('dishs_cid_ind', '{{%dishs}}', ['cid']);
 
         $this->createTable('{{%orders}}', [
             'id' => $this->primaryKey()->comment('Ключик заказа'),
@@ -42,7 +35,7 @@ class m230222_092115_cafe_init extends Migration
             'did' => $this->integer()->notNull()->comment('сылка на заказанное блюдо'),
         ], "COMMENT 'список заказанных блюд '");
         $this->addForeignKey('fk-order-link', '{{%orders_dishs}}', ['oid'], '{{%orders}}', ['id'], 'cascade', 'cascade');
-        $this->addForeignKey('fk-dish-link-order', '{{%orders_dishs}}', ['did'], '{{%dishs}}', ['id'], 'cascade', 'cascade');
+        $this->addForeignKey('fk-dish-link', '{{%orders_dishs}}', ['did'], '{{%dishs}}', ['id'], 'cascade', 'cascade');
         $this->createIndex('od_oid_ind', '{{%orders_dishs}}', ['oid']);
         $this->createIndex('od_did_ind', '{{%orders_dishs}}', ['did']);
     }
