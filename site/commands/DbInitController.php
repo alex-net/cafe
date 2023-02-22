@@ -60,11 +60,15 @@ class DbInitController extends Controller
         // заполнение заказов ..
         $this->stdout("\nГенерация заказов ($ordersCount): ");
         $items = [];
+        $start = mktime(0, 0, 0, 1, 1, 2019);
         for ($i = 0; $i < $ordersCount; $i++) {
-            $items[] = [];
+            $start += rand(4 , 500) * 3600;
+            $items[] = [
+                'date' => date('Y-m-d H:i:s', $start),
+            ];
             $this->stdout('.');
         }
-        $db->createCommand()->batchInsert('{{%orders}}', [], $items)->execute();
+        $db->createCommand()->batchInsert('{{%orders}}', ['date'], $items)->execute();
 
 
         // заполнение связок  заказ - еда )

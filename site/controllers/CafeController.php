@@ -79,9 +79,9 @@ class CafeController extends Controller
     }
 
 
-    public function actionGoodPovars()
+    public function actionGoodPovars($from = null, $to = null)
     {
-        return $this->asJson(Cook::goodPovarList()->asArray()->all());
+        return $this->asJson(Cook::goodPovarList($from, $to)->asArray()->all());
     }
 
 }
