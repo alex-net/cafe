@@ -14,8 +14,9 @@ class DbInitController extends Controller
      * @param      int   $dishsCount     Число блюд
      * @param      int   $ordersCount    число заказов
      * @param      int   $dishsPerOrder  число блюд на заказ
+     * @param      int   $dishsOneType   количество блюд в одной позиции заказа
      */
-    public function actionIndex($cooksCount = 5, $dishsCount = 15, $ordersCount = 100, $dishsPerOrder = 7)
+    public function actionIndex($cooksCount = 5, $dishsCount = 15, $ordersCount = 100, $dishsPerOrder = 7, $dishsOneType = 5)
     {
         $db = Yii::$app->db;
 
@@ -67,7 +68,7 @@ class DbInitController extends Controller
 
 
         // заполнение связок  заказ - еда )
-        $this->stdout("\nГенерация связов заказ-блюда ($ordersCount*[1,$dishsPerOrder]): ");
+        $this->stdout("\nГенерация связов заказ-блюда ($ordersCount*[1,$dishsPerOrder][1,$dishsOneType]): ");
         $items = [];
         for ($i = 0; $i < $ordersCount; $i++) {
             $dishCount = rand(1, $dishsPerOrder);
@@ -75,11 +76,12 @@ class DbInitController extends Controller
                 $items[] = [
                     'oid' => $i + 1,
                     'did' => rand(1, $dishsCount),
+                    'count' => rand(1, 5),
                 ];
                 $this->stdout('.');
             }
         }
-        $db->createCommand()->batchInsert('{{%orders_dishs}}', ['oid', 'did'], $items)->execute();
+        $db->createCommand()->batchInsert('{{%orders_dishs}}', ['oid', 'did', 'count'], $items)->execute();
         $this->stdout("\n");
     }
 }

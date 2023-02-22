@@ -33,6 +33,7 @@ class m230222_092115_cafe_init extends Migration
         $this->createTable('{{%orders_dishs}}', [
             'oid' => $this->integer()->notNull()->comment('ссылка на заказ'),
             'did' => $this->integer()->notNull()->comment('сылка на заказанное блюдо'),
+            'count' => $this->integer()->notNull()->defaultValue(1)->comment('Число блюд в заказе'),
         ], "COMMENT 'список заказанных блюд '");
         $this->addForeignKey('fk-order-link', '{{%orders_dishs}}', ['oid'], '{{%orders}}', ['id'], 'cascade', 'cascade');
         $this->addForeignKey('fk-dish-link', '{{%orders_dishs}}', ['did'], '{{%dishs}}', ['id'], 'cascade', 'cascade');
